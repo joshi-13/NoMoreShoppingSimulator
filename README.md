@@ -1,4 +1,4 @@
-# NoMoreShoppingSimulator
+# No More Shopping Simulator
 
 ### A Balatro mod that reduces the amount of time spent endlessly rerolling for certain cards
 
