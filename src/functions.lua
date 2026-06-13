@@ -72,7 +72,7 @@ end
 SMODS.Keybind {
     key = 'findCard',
     key_pressed = 'f',
-    held_keys = { 'lctrl', 'lshift' }, -- other key(s) that need to be held
+    held_keys = { 'lctrl', 'lshift' }, 
 
     action = function(self)
         start_shop_search(get_hovered_card().config.center.key)
