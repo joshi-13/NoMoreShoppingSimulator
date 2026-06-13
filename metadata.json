@@ -1,0 +1,9 @@
+{
+  "id": "noMoreShoppingSim",
+  "name": "No more shopping simulator",
+  "author": ["Joshi"],
+  "description": "This mod tries to skip the endless shopping in modded runs with close to infinite cash",
+  "prefix": "nmSS",
+  "main_file": "main.lua",
+  "version": "1.0.0"
+}
