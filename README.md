@@ -11,5 +11,7 @@ If you need to stop the rerolling currently the only way is to go back to the ma
 It should work with any modded content. If you find anything that doesn't work let me know and I'll fix it.
 
 Coming soon: 
+
 Keybind support for breaking the loop
+
 Making the mod work with animation cancelling mods (to increase speed)
