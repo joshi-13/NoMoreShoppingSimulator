@@ -130,7 +130,7 @@ SMODS.Keybind {
                     text = "Stopping selection mode",
                     scale = 1,
                     hold = 2,
-                    major = G.OVERLAY_MENU,
+                    major = G.jokers or G.play,
                     backdrop_colour = G.C.GREEN
                 })
 
@@ -142,7 +142,7 @@ SMODS.Keybind {
                     text = "Starting selection mode",
                     scale = 1,
                     hold = 2,
-                    major = G.OVERLAY_MENU,
+                    major = G.jokers or G.play,
                     backdrop_colour = G.C.GREEN
                 })
                 AutoShop.selection_mode = true
