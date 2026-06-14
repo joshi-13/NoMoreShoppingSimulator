@@ -7,6 +7,7 @@
 - It should now have a Sticker that "marks" it as a target 
 - after pressing ctrl+F again the next reroll you do, will keep rerolling the shop until you hit any of the marked items 
 - will also stop if your money reaches 0 or you press ctrl+F again
+  
 (There are also ingame popups when entering/leaving selection mode and when the auto reroll starts/stops)
 
 
