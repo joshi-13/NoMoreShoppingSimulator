@@ -1,14 +1,23 @@
 local AutoShop = {
     active = false,
-    target = nil,
+    targets = {},
     found = false,
     rerolls = 0,
     max_rerolls = 1000,
+    selection_mode = false,
+    start_rolls = false
 }
 
-function start_shop_search(target)
+local function start_shop_search()
+    attention_text({
+        text = "Starting Rerolls",
+        scale = 1,
+        hold = 3,
+        major = G.jokers or G.play,
+        backdrop_colour = G.C.GREEN
+    })
+
     AutoShop.active = true
-    AutoShop.target = target
     AutoShop.found = false
     AutoShop.rerolls = 0
 end
@@ -23,19 +32,35 @@ create_card = function(...)
 
     local key = card.config.center.key
 
-    if AutoShop.active then
-        if key == AutoShop.target then
-            AutoShop.found = true
-            AutoShop.active = false
 
-            print("FOUND " .. key, "AutoShop")
-        end
+    if AutoShop.active and AutoShop.targets[key] then
+        attention_text({
+            text = "Item found",
+            scale = 1,
+            hold = 3,
+            major = G.jokers or G.play,
+            backdrop_colour = G.C.GREEN
+        })
+        AutoShop.found = true
+        AutoShop.active = false
+        AutoShop.targets[key] = false
     end
 
     return card
 end
 
+local old_draw = Card.draw
+function Card:draw(...)
+    local card = self
+    local key = card.config.center.key
 
+    if AutoShop.targets[key] then
+        card:add_sticker('nmSS_selected', true)
+    else
+        card:remove_sticker('nmSS_selected', true)
+    end
+    old_draw(self, ...)
+end
 
 local function queue_reroll()
     if not AutoShop.active or AutoShop.found or AutoShop.rerolls >= AutoShop.max_rerolls or G.GAME.dollars <= G.GAME.current_round.reroll_cost then
@@ -61,6 +86,19 @@ local function queue_reroll()
     }))
 end
 
+
+local old_reroll_shop = G.FUNCS.reroll_shop
+
+G.FUNCS.reroll_shop = function(...)
+    if AutoShop.start_rolls then
+        AutoShop.start_rolls = false
+        start_shop_search()
+        queue_reroll()
+    else
+        old_reroll_shop(...)
+    end
+end
+
 local function get_hovered_card()
     local hover = G.CONTROLLER and G.CONTROLLER.hovering and G.CONTROLLER.hovering.target
     if hover and hover.config and hover.config.center then
@@ -69,15 +107,72 @@ local function get_hovered_card()
     return nil
 end
 
+
 SMODS.Keybind {
-    key = 'findCard',
+    key = 'toggleSelectionMode',
     key_pressed = 'f',
-    held_keys = { 'lctrl', 'lshift' }, -- other key(s) that need to be held
+    held_keys = { 'lctrl' },
 
     action = function(self)
-        start_shop_search(get_hovered_card().config.center.key)
+        if AutoShop.active then
+            attention_text({
+                text = "Cancelling Rerolls",
+                scale = 1,
+                hold = 3,
+                major = G.jokers or G.play,
+                backdrop_colour = G.C.GREEN
+            })
+            AutoShop.active = false
+            AutoShop.start_rolls = false
+        else
+            if AutoShop.selection_mode then
+                attention_text({
+                    text = "Stopping selection mode",
+                    scale = 1,
+                    hold = 2,
+                    major = G.OVERLAY_MENU,
+                    backdrop_colour = G.C.GREEN
+                })
 
-        print("starting search for", AutoShop.target)
-        queue_reroll()
+
+                AutoShop.selection_mode = false
+                AutoShop.start_rolls = true
+            else
+                attention_text({
+                    text = "Starting selection mode",
+                    scale = 1,
+                    hold = 2,
+                    major = G.OVERLAY_MENU,
+                    backdrop_colour = G.C.GREEN
+                })
+                AutoShop.selection_mode = true
+                AutoShop.start_rolls = false
+            end
+        end
+    end,
+}
+
+
+
+SMODS.Keybind {
+    key = 'selectTarget',
+    key_pressed = 'space',
+
+    action = function(self)
+        local card = get_hovered_card()
+
+        if not card then
+            return
+        end
+        if not AutoShop.selection_mode then
+            return
+        end
+
+        local key = card.config.center.key
+
+
+
+
+        AutoShop.targets[key] = not AutoShop.targets[key]
     end,
 }
