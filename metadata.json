@@ -1,9 +1,11 @@
 {
   "id": "noMoreShoppingSim",
   "name": "No more shopping simulator",
-  "author": ["Joshi"],
-  "description": "This mod tries to skip the endless shopping in modded runs with close to infinite cash. While in the shop open your collection hover over a card(joker/tarot/or anything else that generates in the shop), press ctrl+shift+F and the mod should reroll until you hit set card. The only way to break the search currently is running out of money or going back to main menu.",
+  "author": [
+    "Joshi"
+  ],
+  "description": "This mod tries to reduce the endless shopping in modded runs with close to infinite cash. While in a shop press ctrl+F to start selection mode. Press spacebar over any item (either in collection or wherever else you can find something that spawns in shop).  It should now have a Sticker that 'marks' it as a target. After pressing ctrl+F again the next reroll you do, will keep rerolling the shop until you hit any of the marked items. Will also stop if your money reaches 0 or you press ctrl+F again",
   "prefix": "nmSS",
   "main_file": "main.lua",
-  "version": "1.0.0"
+  "version": "1.0.1"
 }
